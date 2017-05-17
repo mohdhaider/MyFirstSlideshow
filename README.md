@@ -7,7 +7,7 @@ Failure to comply to these rules will result in the forfeit your application.
 
 - Don’t fork the project
 - Don’t submit a Pull Request on the repo
-- Don’t comment on any of the issues or Pull Existing Requests
+- Don’t comment on any of the issues or Existing Pull Requests
 
 This "app" is a rather simple one.
 It's only one screen divided into two areas. The app should display images represented by their URL in an array of 4 elements
