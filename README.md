@@ -10,7 +10,7 @@ Failure to comply to these rules will result in the forfeit your application.
 - Don’t comment on any of the issues or Pull Existing Requests
 
 This "app" is a rather simple one.
-It's only one screen divided into two areas. The app should display images an array of 4 elements
+It's only one screen divided into two areas. The app should display images represented by their URL in an array of 4 elements
 ``` 
 ["https://c1.staticflickr.com/6/5615/15570202337_0e64f5046e_k.jpg",
  "https://c1.staticflickr.com/4/3169/2846544061_cb7c04b46f_b.jpg",
