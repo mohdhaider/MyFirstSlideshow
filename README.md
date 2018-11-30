@@ -44,7 +44,7 @@ The second exercise is described in the issues tab on the github project. Don’
 Re-implement the project as if the feature was given to you.  
 If you are applying for a front-end development role, the UI Design doesn’t matter as it is but.  
 The UI items should be flexible enough to be re-used (try to hardcode the least values as possible).  
-Read the first issue on repository and solve it.  
+Read all issues on repository and solve them.  
 We don’t expect any bonuses.  
 Don’t use any external frameworks (we know that most of what we asked can be solved by just importing one).  
 If you need more time, please email us.  
