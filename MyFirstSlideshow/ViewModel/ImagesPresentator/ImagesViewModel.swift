@@ -10,7 +10,7 @@ import Foundation
 
 
 /// This protocol will provide all data that we will need in image table cell.
-protocol ImageCellInfoProtocol: MySuperCacheProtocol {
+protocol ImageCellInfoProtocol {
     var imageUrlString: String? {get}
 }
 

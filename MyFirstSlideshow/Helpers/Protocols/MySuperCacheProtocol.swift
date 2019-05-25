@@ -15,7 +15,7 @@ protocol MySuperCacheProtocol {
     func get(imageAtURLString imageURLString: String, completionBlock: (UIImage?) -> Void)
 }
 
-extension MySuperCacheProtocol {
+extension MySuperCacheProtocol where Self: NSObject {
 
     /// The default implementation of this protocol function provides
     /// the generalized implementation for getting image corresponds to an image URL.

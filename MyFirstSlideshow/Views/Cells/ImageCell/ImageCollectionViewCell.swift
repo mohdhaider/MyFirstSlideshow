@@ -37,7 +37,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
         loadingIndicator.startAnimating()
         
-        model?.get(imageAtURLString: strUrl, completionBlock: {[weak self] (image) in
+        self.get(imageAtURLString: strUrl, completionBlock: {[weak self] (image) in
             
             self?.moveToMainThread({
                 self?.imageView.image = image
