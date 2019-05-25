@@ -12,7 +12,10 @@ class CustomImageView: UIImageView {
 
     // MARK:- Variables -
     
-    enum CellType: Int {
+    /// An enum for providing various kind of effects on UIImageView
+    /// - none: No Effect will be applied
+    /// - RounderCorner4Plx: Provide 4.0 corner radius to UIImageView at all corners
+    enum ImageType: Int {
         case none = 0
         case RounderCorner4Plx
     }
@@ -27,10 +30,12 @@ class CustomImageView: UIImageView {
     
     // MARK:- Class Helpers -
     
+    /// Marking effects as per UIImageView tag.
+    /// Please take a look at ImageType for reference.
     func applyEffects() {
         
         switch tag {
-        case CellType.RounderCorner4Plx.rawValue:
+        case ImageType.RounderCorner4Plx.rawValue:
             self.layer.cornerRadius = 4.0
         default:
             break

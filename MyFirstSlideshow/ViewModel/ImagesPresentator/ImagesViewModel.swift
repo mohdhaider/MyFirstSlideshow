@@ -8,7 +8,9 @@
 
 import Foundation
 
-protocol ImageCellInfo: MySuperCacheProtocol {
+
+/// This protocol will provide all data that we will need in image table cell.
+protocol ImageCellInfoProtocol: MySuperCacheProtocol {
     var imageUrlString: String? {get}
 }
 
@@ -16,11 +18,18 @@ class ImagesViewModel {
     
     // MARK:- variables -
     
+    /// Obsever this to get indication whenever we do need to update data of view.
     lazy var souldRefresh = DataObserver<Bool>(false)
     
+    /// A serial queue for accessing images in serial maaner.
     private let arrImagesSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.ImagesSerialQueue")
-    private var tempArrImages:[ImageCellInfo] = [ImageCellInfo]()
-    var arrImages:[ImageCellInfo] {
+    private var tempArrImages:[ImageCellInfoProtocol] = [ImageCellInfoProtocol]()
+    /// An thread safe array of cell protocols. We can access this array from multiple tread in
+    /// synchronous manner.
+    /// Improvement: We can create a concurrent DispatchQueue instead of serial queue and we can
+    /// add barrier blocks whenever we do need to write data. All read operation can safely executed
+    /// in concurrent manner.
+    var arrImages:[ImageCellInfoProtocol] {
         get {
             return arrImagesSerialQueue.sync { tempArrImages }
         }
@@ -32,6 +41,11 @@ class ImagesViewModel {
     
     // MARK:- Class Helpers -
     
+    /// Preparing initial data source in absence of actual data source.
+    /// We can uee this function to make network call to fetch actual data from server.
+    /// This function will parse all available images url into models and then provide
+    /// a generic array of protocols for data accessing image info.
+    /// This will also inform observers about data changes.
     func prpareDataSource() {
         
         let images: Array<String> = ["https://c1.staticflickr.com/6/5615/15570202337_0e64f5046e_k.jpg",
@@ -46,7 +60,7 @@ class ImagesViewModel {
             
             let arrImagesInfo = try JSONDecoder().decode(ImagesApiResponse.self, from: jsonData)
             
-            arrImages.append(contentsOf: arrImagesInfo.arrImagesInfo as [ImageCellInfo])
+            arrImages.append(contentsOf: arrImagesInfo.arrImagesInfo as [ImageCellInfoProtocol])
             
             print(arrImages)
             

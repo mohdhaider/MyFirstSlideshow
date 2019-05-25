@@ -8,11 +8,15 @@
 
 import UIKit
 
+/// A reusable cell class to show rounded corner image and loading indicator.
 class ImageCollectionViewCell: UICollectionViewCell {
 
     // MARK:- IBOutlets -
-    
+
+    /// A loading indicator that will automatiacally hide when image appear.
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+    
+    /// An 4.0 radius round corner image for showing image for provided url.
     @IBOutlet private weak var imageView: CustomImageView!
     
     // MARK:- Cell Methods -
@@ -24,7 +28,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
     // MARK:- Class Helpers -
     
-    func setup(_ model: ImageCellInfo?) {
+    /// Update image of cell. If image is not available,
+    /// then a loading indicator will keep spinning.
+    /// - Parameter model: Cell info protocol
+    func setup(_ model: ImageCellInfoProtocol?) {
         
         guard let strUrl = model?.imageUrlString, !strUrl.isEmpty else { return }
 
