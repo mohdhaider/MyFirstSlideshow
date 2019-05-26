@@ -21,16 +21,56 @@ class MyFirstSlideshowTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testImagesDownloading() {
+        
+        var fetchExpectations = [XCTestExpectation]()
+        
+        let viewModel = ImagesViewModel()
+        viewModel.prpareDataSource()
+        
+        for (index, model) in viewModel.arrImages.enumerated() {
+
+            if let imageUrl = model.imageUrlString,
+                !imageUrl.isEmpty {
+                
+                XCTContext.runActivity(named: "Image: \(imageUrl)") { _ in
+                    
+                    let waitExpectation = expectation(description: "Waiting: \(imageUrl)")
+
+                    fetchExpectations.append(waitExpectation)
+                    
+                    self.get(imageAtURLString: imageUrl,
+                             completionBlock: { (image) in
+                                
+                                ImageCache.shared.fetchImage(
+                                    forKey: imageUrl,
+                                    completionBlock: { (image) in
+                                        if image != nil {
+                                            fetchExpectations[index].fulfill()
+                                        }
+                                })
+                    })
+                }
+            }
+        }
+     
+        let timeOut = TimeInterval(viewModel.arrImages.count * 10)
+        
+        let result = XCTWaiter.wait(for: fetchExpectations,
+                       timeout: timeOut)
+        
+        XCTContext.runActivity(named: "Result") { _ in
+            
+            switch result {
+            case .completed:
+                print("completed")
+            case .interrupted:
+                print("interrupted")
+            case .timedOut:
+                print("timedOut")
+            default:
+                print("none")
+            }
         }
     }
-    
 }
