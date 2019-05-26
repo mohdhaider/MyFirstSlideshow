@@ -90,9 +90,9 @@ final class ImageCache: NSObject {
     /// might be in access currently. So we need to make sure that any changes in
     /// FileManager should be in serial manner.
     /// - Parameters:
-    ///   - image: UIImage object
+    ///   - image: UIImage/FileURL object
     ///   - key: caching image idetifier
-    func saveImage(_ image: UIImage, forKey key: String) {
+    func saveImage(_ image: Any, forKey key: String) {
         
         cacheQueue.async(flags: .barrier) {[weak self] in
             

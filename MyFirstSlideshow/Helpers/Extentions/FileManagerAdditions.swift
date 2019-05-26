@@ -47,7 +47,11 @@ extension FileManager {
                 else if let data = imageinfo as? Data {
                     imageData = data
                 }
-                
+                else if let url = imageinfo as? URL,
+                    url.isFileURL{
+                    imageData = try Data(contentsOf: url, options: .alwaysMapped)
+                }
+                //print("saveImage = \(imageinfo)")
                 if let imageData = imageData {
                     try imageData.write(to: filePath)
                 }
@@ -55,6 +59,7 @@ extension FileManager {
             }
         }
         catch {
+            //print("saveImage error = \(error)")
             throw error
         }
     }

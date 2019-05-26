@@ -10,10 +10,7 @@ import Foundation
 import UIKit
 
 private typealias ImageListner = (UIImage?) -> ()
-
-fileprivate protocol ImageRequestDownloaderProtocol {
-    func imageRequestFinished(_ image:UIImage?, error: Error?, source: ImageRequestContainer)
-}
+private typealias ImageDownloadingCompletionBlock = (_ imageInfo: AnyObject?, _ error: Error?) -> ()
 
 fileprivate class ImageRequestContainer {
     
@@ -22,24 +19,21 @@ fileprivate class ImageRequestContainer {
     let key: String
     let requestInfo: ImageFetchRequest
     let networkInteractor: NetworkInteractor<ImageFetchRequest>
-    var listners = [ImageListner?]()
-    var delegate: ImageRequestDownloaderProtocol?
+    var listners = [ImageListner]()
     
     var isProgress: Bool = false
     
     // MARK:- Initializers -
     
-    fileprivate init(withInteractor interactor:NetworkInteractor<ImageFetchRequest>, requestInfo info: ImageFetchRequest, key: String, delegate: ImageRequestDownloaderProtocol?, listner: ImageListner?) {
+    fileprivate init(withInteractor interactor:NetworkInteractor<ImageFetchRequest>, requestInfo info: ImageFetchRequest, key: String, listner: ImageListner?) {
         
         self.networkInteractor = interactor
         self.key = key
-        self.delegate = delegate
         self.requestInfo = info
         
         if let listnerAvail = listner {
             listners.append(listnerAvail)
         }
-        fetchImageFromNetwork()
     }
     
     // MARK:- Class Helpers -
@@ -49,46 +43,45 @@ fileprivate class ImageRequestContainer {
         if let listnerAvail = listner {
             listners.append(listnerAvail)
         }
-        fetchImageFromNetwork()
     }
     
     func sendImageToAllListners(_ image: UIImage?) {
         
-        listners.forEach { $0?(image) }
+        listners.forEach { $0(image) }
         listners.removeAll()
     }
     
     // MARK:- Networking Handling -
     
-    func fetchImageFromNetwork() {
-        weak var weakSelf = self
+    func fetchImageFromNetwork(_ completionBlock:@escaping ImageDownloadingCompletionBlock) {
+        
         if !isProgress {
             isProgress = true
             networkInteractor.request(
             requestInfo) { (info, response, error) in
                 
+                self.isProgress = false
+                
                 if let headers = (response as? HTTPURLResponse)?.allHeaderFields as? [String: Any],
-                    let key = weakSelf?.key,
-                    !key.isEmpty{
-                    URLResponseCache().saveCachedHeaders(forKey: key, headers: headers)
+                    !self.key.isEmpty{
+                    URLResponseCache().saveCachedHeaders(forKey: self.key, headers: headers)
                 }
                 
-                if let selfAvail = weakSelf {
+                if let imageFileUrl = info as? URL,
+                    imageFileUrl.isFileURL {
                     
-                    if let imageFileUrl = info as? URL,
-                        imageFileUrl.isFileURL,
-                        let image = UIImage(contentsOfFile: imageFileUrl.path) {
-                        
-                        selfAvail.delegate?.imageRequestFinished(image, error: error, source: selfAvail)
-                    }
-                    else if let imageData = info as? Data,
-                        let image = UIImage(data: imageData, scale: 1.0) {
-                        
-                        selfAvail.delegate?.imageRequestFinished(image, error: error, source: selfAvail)
-                    }
-                    else {
-                        selfAvail.delegate?.imageRequestFinished(nil, error: error, source: selfAvail)
-                    }
+                    completionBlock(imageFileUrl as AnyObject, error)
+                }
+                else if let imageData = info as? Data,
+                    let image = UIImage(data: imageData, scale: 1.0) {
+                    
+                    completionBlock(image, error)
+                }
+                else if let image = info as? UIImage {
+                    completionBlock(image, error)
+                }
+                else {
+                    completionBlock(nil, error)
                 }
             }
         }
@@ -127,19 +120,53 @@ final class ImageDownloader {
             return
         }
         
+        func fetchImage(forRequestContainer container: ImageRequestContainer) {
+            
+            if !container.isProgress {
+                container.fetchImageFromNetwork {[weak self] (imageinfo, error) in
+                 
+                    var downloadedAInfo: Any?
+                    if let image = imageinfo as? UIImage {
+                        downloadedAInfo = image
+                    }
+                    else if let url = imageinfo as? URL,
+                        url.isFileURL,
+                        let data = try? Data(contentsOf: url) {
+                        downloadedAInfo = data
+                    }
+                    
+                    if let info = downloadedAInfo {
+                        ImageCache.shared.saveImage(info, forKey: container.key)
+                    }
+                    
+                    ImageCache.shared.fetchImage(
+                        forKey: container.key,
+                        completionBlock: { (downloadedImage) in
+
+                            container.sendImageToAllListners(downloadedImage)
+                            
+                            self?.ongoingRequests.removeValue(forKey: container.key)
+                    })
+                }
+            }
+        }
+        
         func callImageDownloadingRequest() {
             
             if let request = ongoingRequests[url] {
                 request.addListner(block)
+                
+                fetchImage(forRequestContainer: request)
             } else {
                 let interactor = NetworkInteractor<ImageFetchRequest>()
                 let requestContainer = ImageRequestContainer(withInteractor: interactor,
                                                              requestInfo: .fetch(imageUrl: url, refreshPolicy: policy),
                                                              key: url,
-                                                             delegate: self,
                                                              listner: block)
                 
                 ongoingRequests[url] = requestContainer
+                
+                fetchImage(forRequestContainer: requestContainer)
             }
         }
         
@@ -156,20 +183,5 @@ final class ImageDownloader {
                 callImageDownloadingRequest()
             }
         }
-    }
-}
-
-extension ImageDownloader: ImageRequestDownloaderProtocol {
-    
-    fileprivate func imageRequestFinished(_ image: UIImage?, error: Error?, source: ImageRequestContainer) {
-        
-        source.delegate = nil
-        source.sendImageToAllListners(image)
-        
-        if let imageAvail = image {
-            ImageCache.shared.saveImage(imageAvail, forKey: source.key)
-        }
-        
-        ongoingRequests.removeValue(forKey: source.key)
     }
 }

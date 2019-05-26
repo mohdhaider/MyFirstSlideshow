@@ -83,8 +83,7 @@ extension ImageFetchRequest : EndPoints {
     var task: SessionTask {
         switch self {
         case .fetch(_, _):
-            //return .downloadTask
-            return .dataTask
+            return .downloadTask
         default:
             return .dataTask
         }

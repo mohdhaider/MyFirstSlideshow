@@ -24,7 +24,6 @@
 		1C3381FC2299BFF5001F3D4F /* JsonParametersEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381FB2299BFF5001F3D4F /* JsonParametersEncoding.swift */; };
 		1C3381FE2299C039001F3D4F /* EndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381FD2299C039001F3D4F /* EndPoints.swift */; };
 		1C3382002299C064001F3D4F /* RequestFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381FF2299C064001F3D4F /* RequestFeature.swift */; };
-		1C3382022299C0B6001F3D4F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3382012299C0B6001F3D4F /* NetworkManager.swift */; };
 		1C3382042299C0CE001F3D4F /* NetworkInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3382032299C0CE001F3D4F /* NetworkInteractor.swift */; };
 		1C3382072299C2B4001F3D4F /* ImageFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3382062299C2B4001F3D4F /* ImageFetchRequest.swift */; };
 		1C338209229A48B4001F3D4F /* FileManagerAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */; };
@@ -68,7 +67,6 @@
 		1C3381FB2299BFF5001F3D4F /* JsonParametersEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParametersEncoding.swift; sourceTree = "<group>"; };
 		1C3381FD2299C039001F3D4F /* EndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoints.swift; sourceTree = "<group>"; };
 		1C3381FF2299C064001F3D4F /* RequestFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFeature.swift; sourceTree = "<group>"; };
-		1C3382012299C0B6001F3D4F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		1C3382032299C0CE001F3D4F /* NetworkInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInteractor.swift; sourceTree = "<group>"; };
 		1C3382062299C2B4001F3D4F /* ImageFetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetchRequest.swift; sourceTree = "<group>"; };
 		1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerAdditions.swift; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 		1C3381F22299BF7C001F3D4F /* Network Manager */ = {
 			isa = PBXGroup;
 			children = (
-				1C3382012299C0B6001F3D4F /* NetworkManager.swift */,
 				1C3382032299C0CE001F3D4F /* NetworkInteractor.swift */,
 			);
 			path = "Network Manager";
@@ -499,7 +496,6 @@
 				1C338214229A8B0B001F3D4F /* ImageDownloader.swift in Sources */,
 				567967101ECBC53700F1B57D /* ImagesViewController.swift in Sources */,
 				5679670E1ECBC53700F1B57D /* AppDelegate.swift in Sources */,
-				1C3382022299C0B6001F3D4F /* NetworkManager.swift in Sources */,
 				1C3382002299C064001F3D4F /* RequestFeature.swift in Sources */,
 				1C33820B229A4ACB001F3D4F /* StringAdditions.swift in Sources */,
 				1C3382042299C0CE001F3D4F /* NetworkInteractor.swift in Sources */,

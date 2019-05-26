@@ -62,12 +62,10 @@ class ImagesViewModel {
             
             arrImages.append(contentsOf: arrImagesInfo.arrImagesInfo as [ImageCellInfoProtocol])
             
-            print(arrImages)
-            
             souldRefresh.value = true
         }
         catch {
-            print("error = \(error)")
+            debugPrint("error = \(error)")
         }
     }
 }

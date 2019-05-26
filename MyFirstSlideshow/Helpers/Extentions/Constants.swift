@@ -11,3 +11,7 @@ import Foundation
 enum Constant: String {
     case expireDateFormat = "E, d MMM yyyy HH:mm:ss ZZZ"
 }
+
+enum NotificatinIdentifers: String {
+    case ImageDownloadingFinishNotifiaction
+}
