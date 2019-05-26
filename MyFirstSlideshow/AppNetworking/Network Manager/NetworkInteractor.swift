@@ -29,7 +29,7 @@ class NetworkInteractor<Info>: InteractorProtocol where Info: EndPoints {
             do {
                 switch requestInfo.task {
                 case .dataTask:
-                    var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10)
+                    var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
                     
                     try buildRequest(&request, requestInfo: requestInfo)
                     

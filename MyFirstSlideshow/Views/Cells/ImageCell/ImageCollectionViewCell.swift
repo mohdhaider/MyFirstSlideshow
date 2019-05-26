@@ -33,6 +33,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
     /// - Parameter model: Cell info protocol
     func setup(_ model: ImageCellInfoProtocol?) {
         
+        imageView.image = nil
+        
         guard let strUrl = model?.imageUrlString, !strUrl.isEmpty else { return }
 
         loadingIndicator.startAnimating()
@@ -40,8 +42,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
         self.get(imageAtURLString: strUrl, completionBlock: {[weak self] (image) in
             
             self?.moveToMainThread({
-                self?.imageView.image = image
-                self?.loadingIndicator.stopAnimating()
+                if let image = image {
+                    self?.imageView.image = image
+                    self?.loadingIndicator.stopAnimating()
+                }
             })
         })
     }
