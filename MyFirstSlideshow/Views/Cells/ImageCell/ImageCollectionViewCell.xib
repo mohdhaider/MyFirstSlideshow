@@ -24,6 +24,9 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hqu-jl-Zpb" customClass="CustomImageView" customModule="MyFirstSlideshow" customModuleProvider="target">
                                 <rect key="frame" x="20" y="20" width="160" height="160"/>
+                                <accessibility key="accessibilityConfiguration" identifier="cellImageView">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                             </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nq0-Uq-YWw">
                                 <rect key="frame" x="81.5" y="81.5" width="37" height="37"/>

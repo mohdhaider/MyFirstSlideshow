@@ -38,6 +38,16 @@
                ReferencedContainer = "container:MyFirstSlideshow.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1C1B188D229B480D00CE069C"
+               BuildableName = "MyFirstSlideshowUITests.xctest"
+               BlueprintName = "MyFirstSlideshowUITests"
+               ReferencedContainer = "container:MyFirstSlideshow.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

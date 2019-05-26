@@ -31,6 +31,9 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityLabel" value="collectionView"/>
+                                </userDefinedRuntimeAttributes>
                             </collectionView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="luE-B3-cep">
                                 <rect key="frame" x="10" y="568" width="300" height="0.0"/>
@@ -40,6 +43,7 @@
                             </pageControl>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mpj-Zn-7YX">
                                 <rect key="frame" x="266" y="301" width="54" height="30"/>
+                                <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                 <state key="normal" title="   next   "/>
                                 <connections>
                                     <action selector="buttonDirectionSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D7r-6D-CNN"/>
@@ -47,6 +51,7 @@
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-7u-tVM" userLabel="prev">
                                 <rect key="frame" x="0.0" y="301" width="55" height="30"/>
+                                <accessibility key="accessibilityConfiguration" identifier="previousButton"/>
                                 <state key="normal" title="   prev   "/>
                                 <connections>
                                     <action selector="buttonDirectionSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="spJ-1I-1BA"/>
