@@ -77,6 +77,16 @@ private class DoublyLinkedList<T> {
         
         return tailNode
     }
+    
+    func clearDoublyLinkedList() {
+
+        while tail != nil {
+            _ = removeLast()
+        }
+        count = 0
+        head?.next = nil
+        head = nil
+    }
 }
 
 enum LRUCacheType {
@@ -97,9 +107,31 @@ final class LRUCache<Key, Value> where Key: Hashable {
     
     private var type:LRUCacheType = .none
     
-    private var dictCached:[Key: Node<NodeValue>] = [Key: Node<NodeValue>]()
+    /// Every operation in LRU cache is a write operation.
+    /// If we accessig a element, then moving it to front and if we saving a element.
+    /// Then we also making a write operation. So we do need to make it serialize for
+    /// thread safety.
+    private let dictCachedSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.dictCached")
+    private var tempDictCached:[Key: Node<NodeValue>] = [Key: Node<NodeValue>]()
+    private var dictCached:[Key: Node<NodeValue>] {
+        get {
+            return dictCachedSerialQueue.sync { tempDictCached }
+        }
+        set {
+            dictCachedSerialQueue.async {[weak self] in self?.tempDictCached = newValue }
+        }
+    }
     
-    private let dll = DoublyLinkedList<NodeValue>()
+    private let dllSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.DoublyLinkedList")
+    private var tempDll = DoublyLinkedList<NodeValue>()
+    private var dll:DoublyLinkedList<NodeValue> {
+        get {
+            return dllSerialQueue.sync { tempDll }
+        }
+        set {
+            dllSerialQueue.async {[weak self] in self?.tempDll = newValue }
+        }
+    }
     
     // MARK:- Initializers -
 
@@ -111,14 +143,14 @@ final class LRUCache<Key, Value> where Key: Hashable {
     
     // MARK:- Class Helpers -
     
-    func setValue(_ val: Value, forKey k: Key) {
+    func setValue(_ val: Value, forKey k: Key) -> Bool {
         
-        guard capicity > 0 else { return }
+        guard capicity > 0 else { return false }
         
         if dll.count + 1 > capicity {
             if let lastNode = dll.tail {
                 if !removeCachedData(forValue: lastNode.content.value) {
-                    return
+                    return false
                 }
             }
         }
@@ -143,11 +175,13 @@ final class LRUCache<Key, Value> where Key: Hashable {
             dll.addToHead(node)
             dictCached[k] = node
             
-            return
+            return true
         }
         
         node.content = value
         dll.moveToHead(node)
+        
+        return true
     }
     
     func getValue(forKey key: Key) -> Value? {
@@ -161,6 +195,12 @@ final class LRUCache<Key, Value> where Key: Hashable {
         dll.moveToHead(node)
         
         return node.content.value
+    }
+    
+    func clearLRUCache() {
+        
+        dll.clearDoublyLinkedList()
+        dictCached.removeAll()
     }
 }
 
@@ -184,7 +224,9 @@ extension LRUCache {
                 
                 if let keyAvail = imageUrl.lastPathComponent as? Key,
                     let valueAvail = imageUrl as? Value {
-                    setValue(valueAvail, forKey: keyAvail)
+                    if !setValue(valueAvail, forKey: keyAvail) {
+                        _ = removeCachedData(forValue: valueAvail)
+                    }
                 }
             }
         }
@@ -202,8 +244,7 @@ extension LRUCache {
                 do {
                     try FileManager.default.removeItem(at: urlPath)
                     return true
-                }
-                catch {
+                } catch {
                     return false
                 }
             }

@@ -27,6 +27,7 @@
 		1C338209229A48B4001F3D4F /* FileManagerAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */; };
 		1C33820B229A4ACB001F3D4F /* StringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C33820A229A4ACB001F3D4F /* StringAdditions.swift */; };
 		1C33820F229A5C31001F3D4F /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C33820E229A5C31001F3D4F /* LRUCache.swift */; };
+		1C338211229A6902001F3D4F /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C338210229A6902001F3D4F /* ImageCache.swift */; };
 		5679670E1ECBC53700F1B57D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5679670D1ECBC53700F1B57D /* AppDelegate.swift */; };
 		567967101ECBC53700F1B57D /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5679670F1ECBC53700F1B57D /* ImagesViewController.swift */; };
 		567967131ECBC53700F1B57D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 567967111ECBC53700F1B57D /* Main.storyboard */; };
@@ -66,6 +67,7 @@
 		1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerAdditions.swift; sourceTree = "<group>"; };
 		1C33820A229A4ACB001F3D4F /* StringAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringAdditions.swift; sourceTree = "<group>"; };
 		1C33820E229A5C31001F3D4F /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
+		1C338210229A6902001F3D4F /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		5679670A1ECBC53700F1B57D /* MyFirstSlideshow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstSlideshow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5679670D1ECBC53700F1B57D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5679670F1ECBC53700F1B57D /* ImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				1C33820D229A5BD0001F3D4F /* LRUCache */,
+				1C338210229A6902001F3D4F /* ImageCache.swift */,
 			);
 			path = ImageCache;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C338211229A6902001F3D4F /* ImageCache.swift in Sources */,
 				1C3381ED22994EA2001F3D4F /* MySuperCacheProtocol.swift in Sources */,
 				1C3381D722992BE5001F3D4F /* ImageInfo.swift in Sources */,
 				567967101ECBC53700F1B57D /* ImagesViewController.swift in Sources */,
