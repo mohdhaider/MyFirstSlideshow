@@ -91,6 +91,7 @@ class ImagesViewController: UIViewController {
     private func showImage(forPageIndex index: Int, withAnimation animated: Bool) {
         
         collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: animated)
+        collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
     }
     
     // MARK:- PageControl Helpers -

@@ -20,7 +20,7 @@ extension FileManager {
         do {
             let cachedDirectory = try self.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("CachedImages")
             
-            if !self.fileExists(atPath: cachedDirectory.absoluteString) {
+            if !self.fileExists(atPath: cachedDirectory.path) {
                 try self.createDirectory(at: cachedDirectory, withIntermediateDirectories: false, attributes: nil)
             }
             
@@ -41,7 +41,7 @@ extension FileManager {
                 var imageData: Data?
                 
                 if let image = imageinfo as? UIImage,
-                    let data = image.pngData() {
+                    let data = image.jpegData(compressionQuality: 0.6) {
                     imageData = data
                 }
                 else if let data = imageinfo as? Data {
@@ -86,11 +86,11 @@ extension FileManager {
         do {
             if let directory = try getCacheDirectorWithImagesFolder()?.appendingPathComponent(name) {
                 
-                guard !self.fileExists(atPath: directory.absoluteString) else {
+                guard !self.fileExists(atPath: directory.path) else {
                     return nil
                 }
 
-                guard let image = UIImage(contentsOfFile: directory.absoluteString) else {
+                guard let image = UIImage(contentsOfFile: directory.path) else {
                     return nil
                 }
                 

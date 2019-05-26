@@ -78,7 +78,7 @@ private class DoublyLinkedList<T> {
         return tailNode
     }
     
-    func clearDoublyLinkedList() {
+    func deleteAllNodes() {
 
         while tail != nil {
             _ = removeLast()
@@ -199,7 +199,7 @@ final class LRUCache<Key, Value> where Key: Hashable {
     
     func clearLRUCache() {
         
-        dll.clearDoublyLinkedList()
+        dll.deleteAllNodes()
         dictCached.removeAll()
     }
 }
@@ -234,15 +234,15 @@ extension LRUCache {
  
     private func removeCachedData(forValue value: Value) -> Bool {
         
-        if let urlPath = value as? URL,
-            urlPath.isFileURL {
+        if let url = value as? URL,
+            url.isFileURL {
             
-            if !FileManager.default.fileExists(atPath: urlPath.absoluteString) {
+            if !FileManager.default.fileExists(atPath: url.path) {
                 return true
             }
             else {
                 do {
-                    try FileManager.default.removeItem(at: urlPath)
+                    try FileManager.default.removeItem(at: url)
                     return true
                 } catch {
                     return false

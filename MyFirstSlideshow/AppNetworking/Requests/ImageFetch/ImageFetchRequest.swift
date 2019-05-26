@@ -8,10 +8,69 @@
 
 import Foundation
 
+enum BaseUrlDomains: String {
+    case staticFlickrDomain = "c1.staticflickr.com"
+    case staticReddItDomain = "i.redd.it"
+    case variableUrlDomain = "www.kapstadt.de"
+    case none
+    
+    init?(withUrl url: String) {
+        
+        var domain:BaseUrlDomains = .none
+        
+        if url.contains(BaseUrlDomains.staticFlickrDomain.rawValue) {
+            domain = .staticFlickrDomain
+        }
+        else if url.contains(BaseUrlDomains.staticReddItDomain.rawValue) {
+            domain = .staticReddItDomain
+        }
+        else if url.contains(BaseUrlDomains.variableUrlDomain.rawValue) {
+            domain = .variableUrlDomain
+        }
+        
+        switch domain {
+        case .staticFlickrDomain:
+            self = .staticFlickrDomain
+        case .staticReddItDomain:
+            self = .staticReddItDomain
+        case .variableUrlDomain:
+            self = .variableUrlDomain
+        default:
+            return nil
+        }
+    }
+}
+
 enum ImageRefreshPolicy {
     
     case defaultPolicy
     case timelyRefresh
+    case none
+    
+    init?(withUrl url: String) {
+        
+        var policy:ImageRefreshPolicy = .none
+        
+        if let domain = BaseUrlDomains(withUrl: url) {
+            switch domain {
+            case .staticFlickrDomain, .staticReddItDomain:
+                policy = .defaultPolicy
+            case .variableUrlDomain:
+                policy = .timelyRefresh
+            default:
+                break
+            }
+        }
+        
+        switch policy {
+        case .defaultPolicy:
+            self = .defaultPolicy
+        case .timelyRefresh:
+            self = .timelyRefresh
+        default:
+            return nil
+        }
+    }
 }
 
 enum ImageFetchRequest {
@@ -20,6 +79,16 @@ enum ImageFetchRequest {
 }
 
 extension ImageFetchRequest : EndPoints {
+    
+    var task: SessionTask {
+        switch self {
+        case .fetch(_, _):
+            //return .downloadTask
+            return .dataTask
+        default:
+            return .dataTask
+        }
+    }
     
     var requestURL: URL? {
         switch self {
@@ -36,13 +105,15 @@ extension ImageFetchRequest : EndPoints {
     
     var requestType: RequestFeature {
         
-        let headers =  Parameters()
+        var headers =  Parameters()
         let bodyParams =  Parameters()
         let urlParams =  Parameters()
         
         switch self {
-        case .fetch(_, let refreshPolicy):
-            break
+        case .fetch(let imageUrl, _):
+            if let savedHeaders = URLResponseCache().cachedUrlResponse(forKey: imageUrl) {
+                headers = savedHeaders
+            }
         default:
             break
         }

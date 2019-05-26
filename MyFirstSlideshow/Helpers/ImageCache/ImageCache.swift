@@ -16,6 +16,7 @@ final class ImageCache: NSObject {
     // MARK:- variables -
     
     static let shared = ImageCache()
+    let maxCacheCapicity = 10000
     
     /// Concurrent queue to access LRU cache.
     private let cacheQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.lruCacheQueue", attributes: .concurrent)
@@ -61,7 +62,7 @@ final class ImageCache: NSObject {
     func setupCache() {
         
         cacheQueue.async(flags: .barrier) {[weak self] in
-            self?.cache = LRUCache<String, URL>(withCapicity: 10000, cacheType: .imageCache)
+            self?.cache = LRUCache<String, URL>(withCapicity: self?.maxCacheCapicity ?? 0, cacheType: .imageCache)
         }
     }
 
@@ -77,7 +78,7 @@ final class ImageCache: NSObject {
             let md5 = key.md5()
             
             if let imageFileUrl = self?.cache?.getValue(forKey: md5),
-                let image = UIImage(contentsOfFile: imageFileUrl.absoluteString) {
+                let image = UIImage(contentsOfFile: imageFileUrl.path) {
                 block?(image)
             }else {
                 block?(nil)
@@ -124,8 +125,8 @@ final class ImageCache: NSObject {
     func clearAllCache() {
 
         cacheQueue.async(flags: .barrier) {[weak self] in
-            self?.cache?.clearLRUCache()
             try? FileManager.default.clearCachedImages()
+            self?.cache?.clearLRUCache()
         }
     }
 }
