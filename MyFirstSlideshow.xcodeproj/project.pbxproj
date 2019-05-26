@@ -16,6 +16,17 @@
 		1C3381E722993FD5001F3D4F /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381E622993FD5001F3D4F /* CustomImageView.swift */; };
 		1C3381EA22994AA8001F3D4F /* NSObjectAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381E922994AA8001F3D4F /* NSObjectAdditions.swift */; };
 		1C3381ED22994EA2001F3D4F /* MySuperCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381EC22994EA2001F3D4F /* MySuperCacheProtocol.swift */; };
+		1C3381F62299BFB6001F3D4F /* ParametersEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381F52299BFB6001F3D4F /* ParametersEncoding.swift */; };
+		1C3381FA2299BFDA001F3D4F /* UrlParametersEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381F92299BFDA001F3D4F /* UrlParametersEncoding.swift */; };
+		1C3381FC2299BFF5001F3D4F /* JsonParametersEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381FB2299BFF5001F3D4F /* JsonParametersEncoding.swift */; };
+		1C3381FE2299C039001F3D4F /* EndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381FD2299C039001F3D4F /* EndPoints.swift */; };
+		1C3382002299C064001F3D4F /* RequestFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3381FF2299C064001F3D4F /* RequestFeature.swift */; };
+		1C3382022299C0B6001F3D4F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3382012299C0B6001F3D4F /* NetworkManager.swift */; };
+		1C3382042299C0CE001F3D4F /* NetworkInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3382032299C0CE001F3D4F /* NetworkInteractor.swift */; };
+		1C3382072299C2B4001F3D4F /* ImageFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3382062299C2B4001F3D4F /* ImageFetchRequest.swift */; };
+		1C338209229A48B4001F3D4F /* FileManagerAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */; };
+		1C33820B229A4ACB001F3D4F /* StringAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C33820A229A4ACB001F3D4F /* StringAdditions.swift */; };
+		1C33820F229A5C31001F3D4F /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C33820E229A5C31001F3D4F /* LRUCache.swift */; };
 		5679670E1ECBC53700F1B57D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5679670D1ECBC53700F1B57D /* AppDelegate.swift */; };
 		567967101ECBC53700F1B57D /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5679670F1ECBC53700F1B57D /* ImagesViewController.swift */; };
 		567967131ECBC53700F1B57D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 567967111ECBC53700F1B57D /* Main.storyboard */; };
@@ -44,6 +55,17 @@
 		1C3381E622993FD5001F3D4F /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		1C3381E922994AA8001F3D4F /* NSObjectAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectAdditions.swift; sourceTree = "<group>"; };
 		1C3381EC22994EA2001F3D4F /* MySuperCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySuperCacheProtocol.swift; sourceTree = "<group>"; };
+		1C3381F52299BFB6001F3D4F /* ParametersEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParametersEncoding.swift; sourceTree = "<group>"; };
+		1C3381F92299BFDA001F3D4F /* UrlParametersEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlParametersEncoding.swift; sourceTree = "<group>"; };
+		1C3381FB2299BFF5001F3D4F /* JsonParametersEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonParametersEncoding.swift; sourceTree = "<group>"; };
+		1C3381FD2299C039001F3D4F /* EndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoints.swift; sourceTree = "<group>"; };
+		1C3381FF2299C064001F3D4F /* RequestFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFeature.swift; sourceTree = "<group>"; };
+		1C3382012299C0B6001F3D4F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		1C3382032299C0CE001F3D4F /* NetworkInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInteractor.swift; sourceTree = "<group>"; };
+		1C3382062299C2B4001F3D4F /* ImageFetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetchRequest.swift; sourceTree = "<group>"; };
+		1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerAdditions.swift; sourceTree = "<group>"; };
+		1C33820A229A4ACB001F3D4F /* StringAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringAdditions.swift; sourceTree = "<group>"; };
+		1C33820E229A5C31001F3D4F /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
 		5679670A1ECBC53700F1B57D /* MyFirstSlideshow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstSlideshow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5679670D1ECBC53700F1B57D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5679670F1ECBC53700F1B57D /* ImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +169,7 @@
 		1C3381D822992BF6001F3D4F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				1C33820C229A5BC4001F3D4F /* ImageCache */,
 				1C3381EB22994E8A001F3D4F /* Protocols */,
 				1C3381E822994A83001F3D4F /* Extentions */,
 				1C3381D922992BFE001F3D4F /* Binding */,
@@ -199,6 +222,8 @@
 			isa = PBXGroup;
 			children = (
 				1C3381E922994AA8001F3D4F /* NSObjectAdditions.swift */,
+				1C338208229A48B4001F3D4F /* FileManagerAdditions.swift */,
+				1C33820A229A4ACB001F3D4F /* StringAdditions.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -209,6 +234,77 @@
 				1C3381EC22994EA2001F3D4F /* MySuperCacheProtocol.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		1C3381F02299BF5B001F3D4F /* AppNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				1C3381F12299BF74001F3D4F /* Requests */,
+				1C3381F22299BF7C001F3D4F /* Network Manager */,
+				1C3381F32299BF84001F3D4F /* Service */,
+				1C3381F42299BF8C001F3D4F /* Encodoing */,
+			);
+			path = AppNetworking;
+			sourceTree = "<group>";
+		};
+		1C3381F12299BF74001F3D4F /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				1C3382052299C29B001F3D4F /* ImageFetch */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		1C3381F22299BF7C001F3D4F /* Network Manager */ = {
+			isa = PBXGroup;
+			children = (
+				1C3382012299C0B6001F3D4F /* NetworkManager.swift */,
+				1C3382032299C0CE001F3D4F /* NetworkInteractor.swift */,
+			);
+			path = "Network Manager";
+			sourceTree = "<group>";
+		};
+		1C3381F32299BF84001F3D4F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				1C3381FD2299C039001F3D4F /* EndPoints.swift */,
+				1C3381FF2299C064001F3D4F /* RequestFeature.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		1C3381F42299BF8C001F3D4F /* Encodoing */ = {
+			isa = PBXGroup;
+			children = (
+				1C3381F52299BFB6001F3D4F /* ParametersEncoding.swift */,
+				1C3381F92299BFDA001F3D4F /* UrlParametersEncoding.swift */,
+				1C3381FB2299BFF5001F3D4F /* JsonParametersEncoding.swift */,
+			);
+			path = Encodoing;
+			sourceTree = "<group>";
+		};
+		1C3382052299C29B001F3D4F /* ImageFetch */ = {
+			isa = PBXGroup;
+			children = (
+				1C3382062299C2B4001F3D4F /* ImageFetchRequest.swift */,
+			);
+			path = ImageFetch;
+			sourceTree = "<group>";
+		};
+		1C33820C229A5BC4001F3D4F /* ImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				1C33820D229A5BD0001F3D4F /* LRUCache */,
+			);
+			path = ImageCache;
+			sourceTree = "<group>";
+		};
+		1C33820D229A5BD0001F3D4F /* LRUCache */ = {
+			isa = PBXGroup;
+			children = (
+				1C33820E229A5C31001F3D4F /* LRUCache.swift */,
+			);
+			path = LRUCache;
 			sourceTree = "<group>";
 		};
 		567967011ECBC53700F1B57D = {
@@ -232,6 +328,7 @@
 		5679670C1ECBC53700F1B57D /* MyFirstSlideshow */ = {
 			isa = PBXGroup;
 			children = (
+				1C3381F02299BF5B001F3D4F /* AppNetworking */,
 				1C3381D822992BF6001F3D4F /* Helpers */,
 				1C3381CB229927FF001F3D4F /* ViewModel */,
 				1C3381CC229928C8001F3D4F /* Views */,
@@ -362,11 +459,22 @@
 				1C3381D722992BE5001F3D4F /* ImageInfo.swift in Sources */,
 				567967101ECBC53700F1B57D /* ImagesViewController.swift in Sources */,
 				5679670E1ECBC53700F1B57D /* AppDelegate.swift in Sources */,
+				1C3382022299C0B6001F3D4F /* NetworkManager.swift in Sources */,
+				1C3382002299C064001F3D4F /* RequestFeature.swift in Sources */,
+				1C33820B229A4ACB001F3D4F /* StringAdditions.swift in Sources */,
+				1C3382042299C0CE001F3D4F /* NetworkInteractor.swift in Sources */,
+				1C3381FC2299BFF5001F3D4F /* JsonParametersEncoding.swift in Sources */,
+				1C3381FA2299BFDA001F3D4F /* UrlParametersEncoding.swift in Sources */,
 				1C3381EA22994AA8001F3D4F /* NSObjectAdditions.swift in Sources */,
 				1C3381E222993F2A001F3D4F /* ImageCollectionViewCell.swift in Sources */,
+				1C338209229A48B4001F3D4F /* FileManagerAdditions.swift in Sources */,
 				1C3381E722993FD5001F3D4F /* CustomImageView.swift in Sources */,
+				1C3381FE2299C039001F3D4F /* EndPoints.swift in Sources */,
+				1C3381F62299BFB6001F3D4F /* ParametersEncoding.swift in Sources */,
 				1C3381D322992983001F3D4F /* ImagesViewModel.swift in Sources */,
 				1C3381DB22992C28001F3D4F /* DataObserver.swift in Sources */,
+				1C33820F229A5C31001F3D4F /* LRUCache.swift in Sources */,
+				1C3382072299C2B4001F3D4F /* ImageFetchRequest.swift in Sources */,
 				1C3381DD229932A8001F3D4F /* ImagesApiResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
