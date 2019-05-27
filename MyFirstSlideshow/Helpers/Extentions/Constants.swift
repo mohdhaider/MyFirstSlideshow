@@ -14,7 +14,7 @@ enum Constant: String {
 }
 
 enum AppIntegerConstants: Int {
-    case maxCacheCapicity = 2
+    case maxCacheCapicity = 10000
 }
 
 enum QueueLabels: String {
