@@ -19,6 +19,14 @@ class ImageCollectionViewCell: UICollectionViewCell {
     /// An 4.0 radius round corner image for showing image for provided url.
     @IBOutlet private weak var imageView: CustomImageView!
     
+    // MARK:- Variables -
+    
+    private typealias ImageCallBack = (UIImage?) -> Void
+    
+    private var callBack:(ImageCallBack)?
+    
+    private var cellInfo:ImageCellInfoProtocol?
+    
     // MARK:- Cell Methods -
     
     override func awakeFromNib() {
@@ -39,14 +47,29 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
         loadingIndicator.startAnimating()
         
-        self.get(imageAtURLString: strUrl, completionBlock: {[weak self] (image) in
+        cellInfo = model
+        callBack = {[weak self] (image) in
+            /* Here we are capturing image url. So that on getting frequent callBacks
+             due to cell resue feature. We can identify correct cell for image and
+             can show accordingly.
+            */
+            let imageUrl = strUrl
             
             self?.moveToMainThread({
-                if let image = image {
-                    self?.imageView.image = image
-                    self?.loadingIndicator.stopAnimating()
+                
+                if imageUrl == self?.cellInfo?.imageUrlString {
+                    
+                    if let image = image {
+                        self?.imageView.image = image
+                        self?.loadingIndicator.stopAnimating()
+                    }
                 }
+                
             })
-        })
+        }
+        
+        if let callBackAvail = callBack {
+            self.get(imageAtURLString: strUrl, completionBlock: callBackAvail)
+        }
     }
 }

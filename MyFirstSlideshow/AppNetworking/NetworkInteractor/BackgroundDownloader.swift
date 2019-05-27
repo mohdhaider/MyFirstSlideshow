@@ -33,7 +33,7 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
         super.init()
         
         let configuration = URLSessionConfiguration.background(withIdentifier: "com.Yoti.backgroundDownloads")
-        session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue.main)
     }
     
     // MARK:- Class Helpers -
@@ -59,7 +59,6 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
             let delegate = ongoingRequests[url] {
             
             ongoingRequests.removeValue(forKey: url)
-            
             delegate.didFinishTask(session, downloadTask: downloadTask, didFinishDownloadingTo: location)
         }
     }

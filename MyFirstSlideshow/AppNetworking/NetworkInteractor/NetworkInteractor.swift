@@ -41,7 +41,7 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
         if let url = requestInfo.requestURL {
             
             do {
-                var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
+                var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
                 
                 try buildRequest(&request, requestInfo: requestInfo)
                 
@@ -64,7 +64,7 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
                         
                         downloadTask = task
                         
-                        downloadTask?.resume()
+                        task.resume()
                     }
                     else {
                         completionBlock(nil, nil, nil)
@@ -112,6 +112,10 @@ extension NetworkInteractor: BackgroundDownloaderDelegate {
     }
     
     func downloadProgress(_ session: URLSession, downloadTask: URLSessionDownloadTask, downloadProgress progress: Float) {
-        print(progress)
+        /* As in our current completion block per requirement, we don't have feature to send progress time
+         back to caller. So we can easily modify it by adding support of both progress time and image.
+         As:
+         func get(imageAtURLString imageURLString: String, completionBlock: @escaping (UIImage?, Float?) -> Void)
+        */
     }
 }

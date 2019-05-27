@@ -45,13 +45,13 @@ class MyFirstSlideshowTests: XCTestCase {
                                     self.get(imageAtURLString: imageUrl,
                                              completionBlock: { (image) in
                                                 
-                                                XCTAssertTrue(image != nil)
+                                                XCTAssertNotNil(image)
                                                 
                                                 ImageCache.shared.fetchImage(
                                                     forKey: imageUrl,
                                                     completionBlock: { (image) in
                                                         
-                                                        XCTAssertTrue(image != nil)
+                                                        XCTAssertNotNil(image)
                                                         
                                                         let attachment = XCTAttachment(image: image!)
                                                         attachment.lifetime = .keepAlways

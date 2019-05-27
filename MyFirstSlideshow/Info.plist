@@ -27,12 +27,16 @@
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>kapstadt.de</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <true/>
+                <key>NSRequiresCertificateTransparency</key>
+                <false/>
+            </dict>
 		</dict>
 	</dict>
 	<key>UILaunchStoryboardName</key>

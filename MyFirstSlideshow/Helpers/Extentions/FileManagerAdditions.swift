@@ -51,7 +51,6 @@ extension FileManager {
                     url.isFileURL{
                     imageData = try Data(contentsOf: url, options: .alwaysMapped)
                 }
-                //print("saveImage = \(imageinfo)")
                 if let imageData = imageData {
                     try imageData.write(to: filePath)
                 }
@@ -59,7 +58,6 @@ extension FileManager {
             }
         }
         catch {
-            //print("saveImage error = \(error)")
             throw error
         }
     }

@@ -33,9 +33,11 @@ struct URLResponseCache {
         if let obj = headers[RequestHeaders.Etag.rawValue] {
             fields?[RequestHeaders.Etag.rawValue] = obj
         }
+        if let obj = headers[RequestHeaders.LastModified.rawValue] {
+            fields?[RequestHeaders.LastModified.rawValue] = obj
+        }
         if let fields = fields,
             !key.isEmpty{
-            
             let defaults = UserDefaults.standard
             defaults.set(fields, forKey: key)
             defaults.synchronize()
@@ -62,7 +64,15 @@ struct URLResponseCache {
         
         if !key.isEmpty,
             let savedHeaders = UserDefaults.standard.value(forKey: key) as? [String: Any] {
-            return savedHeaders
+            
+            var dictInfo = [String:Any]()
+            if let obj = savedHeaders[RequestHeaders.LastModified.rawValue] {
+                dictInfo[RequestHeaders.IfModifiedSince.rawValue] = obj
+            }
+            if let obj = savedHeaders[RequestHeaders.Etag.rawValue] {
+                dictInfo[RequestHeaders.IfNotMatch.rawValue] = obj
+            }
+            return dictInfo
         }
         return nil
     }
@@ -72,4 +82,7 @@ enum RequestHeaders: String {
     case CacheControl = "Cache-Control"
     case Etag
     case Expires = "Expires"
+    case LastModified = "Last-Modified"
+    case IfModifiedSince = "If-Modified-Since"
+    case IfNotMatch = "If-None-Match"
 }

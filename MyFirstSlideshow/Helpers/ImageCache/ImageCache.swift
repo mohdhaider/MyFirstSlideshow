@@ -122,7 +122,6 @@ final class ImageCache: NSObject {
             }
             catch {
                 print(ImageCacheErrors.ImageCachingFailed.rawValue)
-                print(error.localizedDescription)
             }
         }
     }

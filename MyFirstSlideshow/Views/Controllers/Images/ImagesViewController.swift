@@ -52,10 +52,15 @@ class ImagesViewController: UIViewController {
         deviceOrientation()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        collectionView.collectionViewLayout.invalidateLayout()
+        super.viewWillTransition(to: size, with: coordinator)
+    }
+    
     /// Update view layout on device orientation.
     func deviceOrientation() {
 
-        reloadCollectionView()
         showImage(forPageIndex: currentIndexPageControl.currentPage, withAnimation: false)
     }
     
@@ -167,7 +172,8 @@ extension ImagesViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         /// Setting up collection view item size to fit for collection view frame.
-        return CGSize(width: collectionView.frame.size.width, height: collectionView.frame.size.height)
+        let size = CGSize(width: collectionView.frame.size.width, height: collectionView.frame.size.height)
+        return size
     }
 }
 
