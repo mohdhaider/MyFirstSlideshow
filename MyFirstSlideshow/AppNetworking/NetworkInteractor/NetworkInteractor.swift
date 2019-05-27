@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-typealias NetworkRequestCompletion = (_ info:AnyObject?, _ response: URLResponse?, _ error: Error?) -> ()
+typealias NetworkRequestCompletion = (_ info:Any?, _ response: URLResponse?, _ error: Error?) -> ()
 
 protocol InteractorProtocol {
     associatedtype Info: EndPoints
@@ -53,7 +53,7 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
                     let session = URLSession.shared
                     
                     dataTask = session.dataTask(with: request) {[weak self] (data, response, error) in
-                        self?.completion?(data as AnyObject, response, error)
+                        self?.completion?(data, response, error)
                     }
                     
                     dataTask?.resume()
@@ -100,7 +100,7 @@ extension NetworkInteractor: BackgroundDownloaderDelegate {
     func didFinishTask(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
         if downloadTask.originalRequest?.url == self.downloadTask?.originalRequest?.url {
-            completion?(location as AnyObject, downloadTask.response, downloadTask.error)
+            completion?(location, downloadTask.response, downloadTask.error)
         }
     }
     
