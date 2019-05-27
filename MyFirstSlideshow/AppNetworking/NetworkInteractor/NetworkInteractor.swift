@@ -9,14 +9,17 @@
 import Foundation
 import UIKit
 
+/// Helper typealias for sending callback to sender.
 typealias NetworkRequestCompletion = (_ info:Any?, _ response: URLResponse?, _ error: Error?) -> ()
 
+/// Provided feature that this network interactor can provide.
 protocol InteractorProtocol {
     associatedtype Info: EndPoints
     
     func request(_ requestInfo:Info, completion completionBlock: @escaping NetworkRequestCompletion)
 }
 
+/// Generic network interactor class to serve different kind of requests.
 class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoints {
     
     // MARK:- Variables -
@@ -36,6 +39,11 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
     
     // MARK:- Class Helpers -
     
+    /// Protocol methos implementation.
+    /// This will work on input request conditions and then fetch reqponse from server accordingly.
+    /// - Parameters:
+    ///   - requestInfo: Generic associatedtype confirmance to support different request end points.
+    ///   - completionBlock: request completion block to provide response to caller.
     func request(_ requestInfo: Info, completion completionBlock: @escaping NetworkRequestCompletion) {
         
         if let url = requestInfo.requestURL {
@@ -46,7 +54,8 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
                 try buildRequest(&request, requestInfo: requestInfo)
                 
                 completion = completionBlock
-                
+                /// Switching mode to data or download task accroding to requirement.
+                /// We can even extent it to handle upload task also.
                 switch requestInfo.task {
                 case .dataTask:
                     
@@ -76,6 +85,12 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
         }
     }
     
+    /// Building request to communicate with server.
+    ///
+    /// - Parameters:
+    ///   - request: URLRequest object to add information
+    ///   - requestInfo: Generic end points
+    /// - Throws: throw errro on failure
     private func buildRequest(_ request: inout URLRequest, requestInfo: Info) throws {
         
         switch requestInfo.requestType {
@@ -88,6 +103,12 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
         }
     }
     
+    
+    /// Add headers in URLRequest
+    ///
+    /// - Parameters:
+    ///   - req: URLequest object
+    ///   - headers: Request headers
     private func addHeaders(request  req: inout URLRequest, _ headers: Parameters) {
         for (key, value) in headers {
             req.setValue("\(value)", forHTTPHeaderField: key)
@@ -95,8 +116,15 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
     }
 }
 
+// MARK: - Delegate methods implementation for prviding download tasks update to callers.
 extension NetworkInteractor: BackgroundDownloaderDelegate {
     
+    /// Called when download task is finished.
+    ///
+    /// - Parameters:
+    ///   - session: NSURLSession object
+    ///   - downloadTask: URLSessionDownloadTask object
+    ///   - location: file loction of temporary downloaded image
     func didFinishTask(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
         if downloadTask.originalRequest?.url == self.downloadTask?.originalRequest?.url {
@@ -104,6 +132,14 @@ extension NetworkInteractor: BackgroundDownloaderDelegate {
         }
     }
     
+    /// Called when download task finished with error. We are making sure that of by it's implementation.
+    /// If downlaod task don't have any error, then
+    /// func didFinishTask(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
+    /// will called.
+    /// - Parameters:
+    ///   - session: URLSession object
+    ///   - task: URLSessionTask object
+    ///   - error: Any encountered error
     func didFinishWithError(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         
         if task.originalRequest?.url == self.downloadTask?.originalRequest?.url {
@@ -111,6 +147,12 @@ extension NetworkInteractor: BackgroundDownloaderDelegate {
         }
     }
     
+    /// Download task's downloaded content progress update. It will in range from 0.0 to 1.0.
+    ///
+    /// - Parameters:
+    ///   - session: URLSession object
+    ///   - downloadTask: URLSessionDownloadTask object
+    ///   - progress: downloaded content ratio
     func downloadProgress(_ session: URLSession, downloadTask: URLSessionDownloadTask, downloadProgress progress: Float) {
         /* As in our current completion block per requirement, we don't have feature to send progress time
          back to caller. So we can easily modify it by adding support of both progress time and image.

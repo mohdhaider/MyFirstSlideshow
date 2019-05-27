@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Using this enum for cehcking base url domain of provided URLs.
 enum BaseUrlDomains: String {
     case staticFlickrDomain = "c1.staticflickr.com"
     case staticReddItDomain = "i.redd.it"
@@ -41,6 +42,9 @@ enum BaseUrlDomains: String {
     }
 }
 
+/// Using this enum for gettign image refresh policy. This can be extended upto
+/// more flexible refresh policy in future scope. Currently we are not using it.
+/// We are using image refresh time inetrval for refreshing image from server.
 enum ImageRefreshPolicy {
     
     case defaultPolicy
@@ -73,11 +77,13 @@ enum ImageRefreshPolicy {
     }
 }
 
+/// Cases that we can work with image network request.
 enum ImageFetchRequest {
     case none
     case fetch(imageUrl: String, refreshPolicy: ImageRefreshPolicy)
 }
 
+/// Default implementation of all EndPoints.
 extension ImageFetchRequest : EndPoints {
     
     var task: SessionTask {
@@ -99,9 +105,16 @@ extension ImageFetchRequest : EndPoints {
     }
     
     var httpType: HTTPType {
-        return .get
+        switch self {
+        case .fetch(_ , _):
+            return .get
+        default:
+            return .get
+        }
     }
     
+    /// If we do have fetch image request, then we need to add request headers as per demand.
+    /// Maybe we do have image change on server that we can bring on expiration.
     var requestType: RequestFeature {
         
         var headers =  Parameters()

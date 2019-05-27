@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// URLSession background tasks downloder manager.
 final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     
     private var session: URLSession!
@@ -16,6 +17,9 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     
     static let shared = BackgroundDownloader()
 
+    /// We can submit download requets in concurrent manner as much as we want but we do need to tarck and update their
+    /// state to "ongoingRequests" holder in thread safe manner. For that we can currently use serial queue to
+    /// achive thread safety.
     private let ongoingRequestsSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.ongoingRequestsSerialQueue")
     private var tempOngoingRequests = [URL: BackgroundDownloaderDelegate]()
     private var ongoingRequests: [URL: BackgroundDownloaderDelegate] {
@@ -29,6 +33,7 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     
     // MARK:- Initializers -
     
+    /// Setting up background session configuration.
     private override init() {
         super.init()
         
@@ -38,6 +43,12 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     
     // MARK:- Class Helpers -
     
+    /// Check whether a save download task in in progress or not. If not then will
+    /// create a download task and provided to caller.
+    /// - Parameters:
+    ///   - request: URLRequest object
+    ///   - delegate: Background downloading tasks callback delegate object
+    /// - Returns: URLSessionDownloadTask object nullable
     func getDownloadTask(forRequest request: URLRequest, delegate: BackgroundDownloaderDelegate) -> URLSessionDownloadTask? {
         
         if let url = request.url,
@@ -55,6 +66,8 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 
+        /// If finished task in it ongoingRequests, then removing it and providing required information
+        /// to caller delegate.
         if let url = downloadTask.originalRequest?.url,
             let delegate = ongoingRequests[url] {
             
@@ -65,6 +78,8 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
 
+        /// If error task in it ongoingRequests, then removing it and providing required information
+        /// to caller delegate.
         if error != nil,
             let url = task.originalRequest?.url,
             let delegate = ongoingRequests[url] {
@@ -79,6 +94,8 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
         
         guard let url = downloadTask.originalRequest?.url else { return }
         
+        /// If task in it ongoingRequests, then calculating download progress and providing it
+        /// to caller delegate.
         let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
         
         if let delegate = ongoingRequests[url] {
@@ -87,6 +104,7 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     }
 }
 
+/// Background downloading tasks delegate methods. You can adopt these methods to get downloading tasks state changes.
 protocol BackgroundDownloaderDelegate {
     
     func didFinishTask(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
