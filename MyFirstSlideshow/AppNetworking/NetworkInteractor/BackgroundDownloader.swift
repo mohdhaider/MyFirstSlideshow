@@ -20,7 +20,7 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
     /// We can submit download requets in concurrent manner as much as we want but we do need to tarck and update their
     /// state to "ongoingRequests" holder in thread safe manner. For that we can currently use serial queue to
     /// achive thread safety.
-    private let ongoingRequestsSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.ongoingRequestsSerialQueue")
+    private let ongoingRequestsSerialQueue:DispatchQueue = DispatchQueue(label: QueueLabels.ongoingBackgroundDownloadRequests.rawValue)
     private var tempOngoingRequests = [URL: BackgroundDownloaderDelegate]()
     private var ongoingRequests: [URL: BackgroundDownloaderDelegate] {
         get {

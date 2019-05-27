@@ -111,7 +111,7 @@ final class ImageDownloader {
     static let shared = ImageDownloader()
     
     /// Current downloading request holding dictionary. So that we can monitor which request are in progerss for now.
-    private let requetsQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.ImageDownloadingRequestQueue", attributes: .concurrent)
+    private let requetsQueue:DispatchQueue = DispatchQueue(label: QueueLabels.imageDownloading.rawValue, attributes: .concurrent)
     private var tempOngoingRequests = [String: ImageRequestContainer]()
     private var ongoingRequests:[String: ImageRequestContainer]  {
         get {

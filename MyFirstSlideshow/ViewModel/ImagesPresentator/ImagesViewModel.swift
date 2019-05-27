@@ -22,7 +22,7 @@ class ImagesViewModel {
     lazy var souldRefresh = DataObserver<Bool>(false)
     
     /// A serial queue for accessing images in serial maaner.
-    private let arrImagesSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.ImagesSerialQueue")
+    private let arrImagesSerialQueue:DispatchQueue = DispatchQueue(label: QueueLabels.imagesSerialQueue.rawValue)
     private var tempArrImages:[ImageCellInfoProtocol] = [ImageCellInfoProtocol]()
     /// An thread safe array of cell protocols. We can access this array from multiple tread in
     /// synchronous manner.

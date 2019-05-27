@@ -165,7 +165,7 @@ final class LRUCache<Key, Value> where Key: Hashable {
     /// If we accessig a element, then moving it to front and if we saving a element.
     /// Then we also making a write operation. So we do need to make it serialize for
     /// thread safety.
-    private let dictCachedSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.dictCached")
+    private let dictCachedSerialQueue:DispatchQueue = DispatchQueue(label: QueueLabels.dictCached.rawValue)
     private var tempDictCached:[Key: Node<NodeValue>] = [Key: Node<NodeValue>]()
     private var dictCached:[Key: Node<NodeValue>] {
         get {
@@ -176,7 +176,7 @@ final class LRUCache<Key, Value> where Key: Hashable {
         }
     }
     
-    private let dllSerialQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.DoublyLinkedList")
+    private let dllSerialQueue:DispatchQueue = DispatchQueue(label: QueueLabels.doublyLinkedList.rawValue)
     private var tempDll = DoublyLinkedList<NodeValue>()
     private var dll:DoublyLinkedList<NodeValue> {
         get {

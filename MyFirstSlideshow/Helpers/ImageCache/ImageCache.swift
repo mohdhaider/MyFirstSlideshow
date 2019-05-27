@@ -16,10 +16,10 @@ final class ImageCache: NSObject {
     // MARK:- variables -
     
     static let shared = ImageCache()
-    let maxCacheCapicity = 10000
+    let maxCacheCapicity = AppIntegerConstants.maxCacheCapicity.rawValue
     
     /// Concurrent queue to access LRU cache.
-    private let cacheQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.lruCacheQueue", attributes: .concurrent)
+    private let cacheQueue:DispatchQueue = DispatchQueue(label: QueueLabels.lruCacheQueue.rawValue, attributes: .concurrent)
     private var cache: LRUCache<String, URL>?
     
     // MARK:- Initializers -
@@ -121,7 +121,7 @@ final class ImageCache: NSObject {
                 })
             }
             catch {
-                print(ImageCacheErrors.ImageCachingFailed.rawValue)
+                debugPrint(ImageCacheErrors.ImageCachingFailed.rawValue)
             }
         }
     }
