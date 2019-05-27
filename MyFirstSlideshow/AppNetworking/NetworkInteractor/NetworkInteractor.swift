@@ -17,44 +17,6 @@ protocol InteractorProtocol {
     func request(_ requestInfo:Info, completion completionBlock: @escaping NetworkRequestCompletion)
 }
 
-final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
-    
-    private var session: URLSession!
-    
-    // MARK:- Variables -
-    
-    static let shared = BackgroundDownloader()
-    
-    // MARK:- Initializers -
-    
-    private override init() {
-        super.init()
-        
-        let configuration = URLSessionConfiguration.background(withIdentifier: "com.Yoti.backgroundDownloads")
-        session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-    }
-    
-    // MARK:- Class Helpers -
-    
-    func getDownloadTask(forRequest request: URLRequest) -> URLSessionDownloadTask? {
-     
-        return session.downloadTask(with: request)
-    }
-    
-    // MARK:- URLSessionDownloadDelegate -
-    
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-   
-        var arrInfos = [Any]()
-        arrInfos.append(downloadTask)
-        arrInfos.append(location)
-        
-        NotificationCenter.default.post(
-            name: NSNotification.Name(rawValue: NotificatinIdentifers.ImageDownloadingFinishNotifiaction.rawValue),
-            object: arrInfos)
-    }
-}
-
 class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoints {
     
     // MARK:- Variables -
@@ -67,11 +29,9 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
     
     override init() {
         super.init()
-        addObservers()
     }
     
     deinit {
-        removeObserver()
     }
     
     // MARK:- Class Helpers -
@@ -100,9 +60,15 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
                     
                 case .downloadTask:
                     
-                    downloadTask = BackgroundDownloader.shared.getDownloadTask(forRequest: request)
-                    
-                    downloadTask?.resume()
+                    if let task = BackgroundDownloader.shared.getDownloadTask(forRequest: request, delegate: self) {
+                        
+                        downloadTask = task
+                        
+                        downloadTask?.resume()
+                    }
+                    else {
+                        completionBlock(nil, nil, nil)
+                    }
                 }
             } catch {
                 completionBlock(nil, nil, error)
@@ -127,45 +93,25 @@ class NetworkInteractor<Info>: NSObject, InteractorProtocol where Info: EndPoint
             req.setValue("\(value)", forHTTPHeaderField: key)
         }
     }
+}
+
+extension NetworkInteractor: BackgroundDownloaderDelegate {
     
-    // MARK:- Notifications -
-    
-    func addObservers() {
+    func didFinishTask(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(imageDownlaoded(_:)),
-            name: NSNotification.Name(rawValue: NotificatinIdentifers.ImageDownloadingFinishNotifiaction.rawValue),
-            object: nil)
-    }
-    
-    func removeObserver() {
-        
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func imageDownlaoded(_ notif: Notification?) {
-        
-        if let arrObjs = notif?.object as? [Any] {
-            
-            var task:URLSessionDownloadTask?
-            var location: URL?
-            
-            for obj in arrObjs {
-                if let content = obj as? URL {
-                    location = content
-                }
-                else if let content = obj as? URLSessionDownloadTask {
-                    task = content
-                }
-            }
-            
-            if let downloadTask = downloadTask,
-                let taskAvail = task,
-                downloadTask === taskAvail{
-                
-                completion?(location as AnyObject, downloadTask.response, downloadTask.error)
-            }
+        if downloadTask.originalRequest?.url == self.downloadTask?.originalRequest?.url {
+            completion?(location as AnyObject, downloadTask.response, downloadTask.error)
         }
+    }
+    
+    func didFinishWithError(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        
+        if task.originalRequest?.url == self.downloadTask?.originalRequest?.url {
+            completion?(nil, task.response, error)
+        }
+    }
+    
+    func downloadProgress(_ session: URLSession, downloadTask: URLSessionDownloadTask, downloadProgress progress: Float) {
+        print(progress)
     }
 }
