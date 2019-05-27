@@ -45,15 +45,21 @@ class MyFirstSlideshowTests: XCTestCase {
                                     self.get(imageAtURLString: imageUrl,
                                              completionBlock: { (image) in
                                                 
-                                                XCTAssertNotNil(image)
+                                                guard let _ = image else {
+                                                    XCTFail("Expected a image at this location. This can be failed to downlaod from server.")
+                                                    return
+                                                }
                                                 
                                                 ImageCache.shared.fetchImage(
                                                     forKey: imageUrl,
                                                     completionBlock: { (image) in
                                                         
-                                                        XCTAssertNotNil(image)
+                                                        guard let image = image else {
+                                                            XCTFail("Expected a image at this location. Reason can be image failed to save in local LRU cache.")
+                                                            return
+                                                        }
                                                         
-                                                        let attachment = XCTAttachment(image: image!)
+                                                        let attachment = XCTAttachment(image: image)
                                                         attachment.lifetime = .keepAlways
                                                         self.add(attachment)
                                                         
