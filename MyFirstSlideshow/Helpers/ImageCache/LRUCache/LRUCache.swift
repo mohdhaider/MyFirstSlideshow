@@ -78,6 +78,40 @@ private class DoublyLinkedList<T> {
         return tailNode
     }
     
+    func removeNode(_ node: Node<T>) {
+        
+        guard let tailNode = tail else { return }
+        
+        if tailNode === node{
+
+            let prev = tailNode.prev
+            prev?.next = nil
+            tail = prev
+            
+            if node === head {
+                count = 0
+                head?.next = nil
+                head = nil
+            }
+        } else if node === head {
+            
+            let next = node.next
+            head?.next = nil
+            next?.prev = nil
+            head = next
+            
+            count -= 1
+        } else {
+            let next = node.next
+            let prev = node.prev
+            
+            prev?.next = next
+            next?.prev = prev
+            
+            count -= 1
+        }
+    }
+    
     func deleteAllNodes() {
 
         while tail != nil {
@@ -195,6 +229,17 @@ final class LRUCache<Key, Value> where Key: Hashable {
         dll.moveToHead(node)
         
         return node.content.value
+    }
+    
+    func removeValue(forKey key: Key) {
+        
+        guard capicity > 0 else { return }
+        
+        guard let node = dictCached[key] else {
+            return
+        }
+        
+        dll.removeNode(node)
     }
     
     func clearLRUCache() {

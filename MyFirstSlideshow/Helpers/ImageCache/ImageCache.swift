@@ -77,9 +77,14 @@ final class ImageCache: NSObject {
         
             let md5 = key.md5()
             
-            if let imageFileUrl = self?.cache?.getValue(forKey: md5),
-                let image = UIImage(contentsOfFile: imageFileUrl.path) {
-                block?(image)
+            if let imageFileUrl = self?.cache?.getValue(forKey: md5) {
+                
+                if let image = UIImage(contentsOfFile: imageFileUrl.path) {
+                    block?(image)
+                } else {
+                    self?.cache?.removeValue(forKey: md5)
+                    block?(nil)
+                }
             }else {
                 block?(nil)
             }
