@@ -23,7 +23,16 @@ private class Node<T> {
 /// Doubly linked list class to provide LRU cache feature
 private class DoublyLinkedList<T> {
     
-    var count: Int = 0
+    private var tempCount: Int = 0
+    var count: Int  {
+        set {
+            tempCount = newValue
+            if tempCount < 0 { tempCount = 0 }
+        }
+        get {
+            return tempCount
+        }
+    }
     
     var head: Node<T>?
     var tail: Node<T>?
