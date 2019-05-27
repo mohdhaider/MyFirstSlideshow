@@ -10,6 +10,12 @@ import Foundation
 
 extension Date {
     
+    /// Get date components to input date.
+    ///
+    /// - Parameters:
+    ///   - date: To Date
+    ///   - format: Date string format
+    /// - Returns: DateComponents if any
     func dateComponents(toDate date:Any, dateFormat format: String) -> DateComponents? {
         
         var components: DateComponents?

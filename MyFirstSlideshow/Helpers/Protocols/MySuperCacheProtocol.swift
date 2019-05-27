@@ -24,12 +24,9 @@ extension MySuperCacheProtocol where Self: NSObject {
     ///   - completionBlock: Provide image for image url asynchronously
     func get(imageAtURLString imageURLString: String, completionBlock: @escaping (UIImage?) -> Void) {
         
-        let refreshPolicy = ImageRefreshPolicy(withUrl: imageURLString) ?? .defaultPolicy
-
         ImageDownloader.shared.getImage(
-            forUrl: imageURLString,
-            withRefreshPolicy: refreshPolicy) { (image) in
-                completionBlock(image)
+        forUrl: imageURLString) { (image) in
+            completionBlock(image)
         }
     }
 }

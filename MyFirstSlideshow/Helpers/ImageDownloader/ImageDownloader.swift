@@ -9,9 +9,12 @@
 import Foundation
 import UIKit
 
+/// Helpers for providing callback to caller
 private typealias ImageListner = (UIImage?) -> ()
 private typealias ImageDownloadingCompletionBlock = (_ imageInfo: AnyObject?, _ error: Error?) -> ()
 
+/// Current ongoing request container for gettig network call response and then provide infromation to
+/// ImageDownloader class.
 fileprivate class ImageRequestContainer {
     
     // MARK:- variables -
@@ -25,6 +28,9 @@ fileprivate class ImageRequestContainer {
     
     // MARK:- Initializers -
     
+    /// Initialise container with defauilt content.
+    /// We are sure that we will use this only for image downlaing feature.
+    /// As it do have listners that need frequest updated infroamtion.
     fileprivate init(withInteractor interactor:NetworkInteractor<ImageFetchRequest>, requestInfo info: ImageFetchRequest, key: String, listner: ImageListner?) {
         
         self.networkInteractor = interactor
@@ -38,14 +44,20 @@ fileprivate class ImageRequestContainer {
     
     // MARK:- Class Helpers -
     
-    func addListner(_ listner: ImageListner?) {
+    /// Add new listner to array of listners for providng callbacks when
+    /// image is downloaded.
+    /// - Parameter listner: Callback closure
+    fileprivate func addListner(_ listner: ImageListner?) {
         
         if let listnerAvail = listner {
             listners.append(listnerAvail)
         }
     }
     
-    func sendImageToAllListners(_ image: UIImage?) {
+    /// Sending input image to all listners
+    ///
+    /// - Parameter image: UIImage
+    fileprivate func sendImageToAllListners(_ image: UIImage?) {
         
         listners.forEach { $0(image) }
         listners.removeAll()
@@ -53,7 +65,10 @@ fileprivate class ImageRequestContainer {
     
     // MARK:- Networking Handling -
     
-    func fetchImageFromNetwork(_ completionBlock:@escaping ImageDownloadingCompletionBlock) {
+    /// Fetch request image from network if it's not in progress already.
+    ///
+    /// - Parameter completionBlock: Completion block for caller.
+    fileprivate func fetchImageFromNetwork(_ completionBlock:@escaping ImageDownloadingCompletionBlock) {
         
         if !isProgress {
             isProgress = true
@@ -88,12 +103,14 @@ fileprivate class ImageRequestContainer {
     }
 }
 
+/// Image downloader singleton class to handle all image features.
 final class ImageDownloader {
     
     // MARK:- Variables -
     
     static let shared = ImageDownloader()
     
+    /// Current downloading request holding dictionary. So that we can monitor which request are in progerss for now.
     private let requetsQueue:DispatchQueue = DispatchQueue(label: "com.Yoti.ImageDownloadingRequestQueue", attributes: .concurrent)
     private var tempOngoingRequests = [String: ImageRequestContainer]()
     private var ongoingRequests:[String: ImageRequestContainer]  {
@@ -113,13 +130,21 @@ final class ImageDownloader {
     
     // MARK:- Class Helpers -
     
-    func getImage(forUrl url:String, withRefreshPolicy policy: ImageRefreshPolicy, completionBlock block:((UIImage?) -> ())?) {
+    /// Get image from local cache. Fetched image from server of needed.
+    /// (If image not present or expired)
+    /// - Parameters:
+    ///   - url: Image url
+    ///   - block: Image callback closure
+    func getImage(forUrl url:String, completionBlock block:((UIImage?) -> ())?) {
         
         guard !url.isEmpty else {
             block?(nil)
             return
         }
         
+        /// if image is not in progress, then it will submit image
+        /// downloading request send downloaded image to add needed callers.
+        /// - Parameter container: Image request continer object
         func fetchImage(forRequestContainer container: ImageRequestContainer) {
             
             if !container.isProgress {
@@ -151,6 +176,7 @@ final class ImageDownloader {
             }
         }
         
+        /// Decision method wether to call image downlaod or not.
         func callImageDownloadingRequest() {
             
             if let request = ongoingRequests[url] {
@@ -160,7 +186,7 @@ final class ImageDownloader {
             } else {
                 let interactor = NetworkInteractor<ImageFetchRequest>()
                 let requestContainer = ImageRequestContainer(withInteractor: interactor,
-                                                             requestInfo: .fetch(imageUrl: url, refreshPolicy: policy),
+                                                             requestInfo: .fetch(imageUrl: url),
                                                              key: url,
                                                              listner: block)
                 
@@ -170,6 +196,7 @@ final class ImageDownloader {
             }
         }
         
+        /// Fetch image from local cache. If image not found or expired, then send image to downloading module.
         ImageCache.shared.fetchImage(
         forKey: url) { (image) in
             

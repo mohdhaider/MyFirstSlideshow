@@ -126,6 +126,7 @@ final class ImageCache: NSObject {
         }
     }
     
+    /// Clear all cache if device memory become full
     func clearAllCache() {
 
         cacheQueue.async(flags: .barrier) {[weak self] in

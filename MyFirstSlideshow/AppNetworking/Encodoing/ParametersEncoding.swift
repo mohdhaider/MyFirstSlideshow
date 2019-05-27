@@ -10,10 +10,16 @@ import Foundation
 
 typealias Parameters = [String:Any]
 
+/// Encoding protocol to provide encoding(body, url and headers) to request generation.
 protocol EncodingProtocol {
     func encode(_ request: inout URLRequest, parameters: Parameters) throws
 }
 
+/// Differnet request encodig features
+///
+/// - urlEncoding: Only url/query-items will added
+/// - jsonEncoding: Body encoding will added
+/// - urlAndJsonEncoding: Above both encoding will be in taken care off
 enum ParametersEncoding {
     case urlEncoding
     case jsonEncoding
@@ -33,6 +39,11 @@ enum ParametersEncoding {
     }
 }
 
+/// Errors while encoding
+///
+/// - urlNotAvailable: URL not available to initila encoding
+/// - urlEncodingFailed: Query items uncoding fails
+/// - jsonEncodingFailed: Body encoding fails
 enum ParametersEncodingErrors: String, Error {
     case urlNotAvailable = "Url Not Available"
     case urlEncodingFailed = "Url Encoding Failed"

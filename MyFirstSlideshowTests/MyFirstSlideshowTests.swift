@@ -38,7 +38,7 @@ class MyFirstSlideshowTests: XCTestCase {
                 
                 XCTContext.runActivity(named: "Image: \(imageUrl)") { _ in
                     
-                    waitForTimeout(for: 10,
+                    waitForTimeout(for: 30,
                                    callback: { (expectation) in
                                     self.fetchExpectations.append(expectation)
                                     

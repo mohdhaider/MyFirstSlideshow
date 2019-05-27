@@ -1,5 +1,5 @@
 //
-//  TYImageInfo.swift
+//  ImageInfo.swift
 //  MyFirstSlideshow
 //
 //  Created by Mohd Haider on 25/05/19.

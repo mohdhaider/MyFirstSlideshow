@@ -15,6 +15,10 @@ enum FileManagerErrors: String, Error {
 
 extension FileManager {
     
+    /// Cache directory for imaeg cache folder
+    ///
+    /// - Returns: Cache directory url
+    /// - Throws: throw error if occured
     func getCacheDirectorWithImagesFolder() throws -> URL? {
         
         do {
@@ -31,6 +35,13 @@ extension FileManager {
         }
     }
     
+    /// Save inout object(Image Data, Image Path, UIImage object) as image
+    /// in Cache directory.
+    /// - Parameters:
+    ///   - imageinfo: image content
+    ///   - name: image name
+    ///   - completion: saved image path
+    /// - Throws: throw any error if occured
     func saveImage(_ imageinfo: Any, imageName name: String, _ completion:((_ imagePath: URL?) -> ())?) throws {
 
         do {
@@ -51,6 +62,7 @@ extension FileManager {
                     url.isFileURL{
                     imageData = try Data(contentsOf: url, options: .alwaysMapped)
                 }
+                
                 if let imageData = imageData {
                     try imageData.write(to: filePath)
                 }
@@ -62,6 +74,10 @@ extension FileManager {
         }
     }
     
+    /// Remove image from cache folder
+    ///
+    /// - Parameter name: image name
+    /// - Throws: throw any error if occured
     func removeImage(_ name: String) throws {
         do {
             if let fileURLPath = try getCacheDirectorWithImagesFolder()?.appendingPathComponent(name) {
@@ -73,6 +89,9 @@ extension FileManager {
         }
     }
     
+    /// Remove all images.
+    ///
+    /// - Throws: throw any error if occured
     func clearCachedImages() throws {
         do {
             if let fileURLPath = try getCacheDirectorWithImagesFolder() {
@@ -84,6 +103,11 @@ extension FileManager {
         }
     }
     
+    /// Fetch image from cache if available
+    ///
+    /// - Parameter name: image name
+    /// - Returns: UIImage object
+    /// - Throws: throw any error if occured
     func getImage(_ name:String) throws -> UIImage? {
         
         do {
@@ -108,6 +132,10 @@ extension FileManager {
         }
     }
     
+    /// Total cached images in cache directory
+    ///
+    /// - Returns: number of cached images
+    /// - Throws: throw any error if occured
     func totalCachedImages() throws -> Int? {
         do {
             if let cacheDirectory = try getCacheDirectorWithImagesFolder() {
@@ -123,6 +151,10 @@ extension FileManager {
         }
     }
     
+    /// All cached images local File urls
+    ///
+    /// - Returns: array of file urls
+    /// - Throws: throw any error if occured
     func allCachedImageURLPaths() throws -> [URL]? {
         do {
             if let cacheDirectory = try getCacheDirectorWithImagesFolder() {

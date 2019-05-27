@@ -8,6 +8,7 @@
 
 import Foundation
 
+// App constants
 enum Constant: String {
     case expireDateFormat = "E, d MMM yyyy HH:mm:ss ZZZ"
 }

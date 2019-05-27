@@ -8,6 +8,10 @@
 
 import Foundation
 
+/// Provide request feature as per requirement.
+///
+/// - request: Provide simple request
+/// - requestWithParameters: Request with custom body, query items and headers.
 enum RequestFeature {
     case request
     case requestWithParameters(encoding: ParametersEncoding, urlParameters: Parameters, bodyParameters: Parameters, headers: Parameters)

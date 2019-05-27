@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Doubly linked list node for referecing next and previous node.
 private class Node<T> {
     
     var content: T
@@ -19,6 +20,7 @@ private class Node<T> {
     }
 }
 
+/// Doubly linked list class to provide LRU cache feature
 private class DoublyLinkedList<T> {
     
     var count: Int = 0
@@ -26,6 +28,9 @@ private class DoublyLinkedList<T> {
     var head: Node<T>?
     var tail: Node<T>?
     
+    /// Add node to head and change haad to new node
+    ///
+    /// - Parameter node: Node
     func addToHead(_ node: Node<T>) {
         
         if head ==  nil {
@@ -41,6 +46,9 @@ private class DoublyLinkedList<T> {
         count += 1
     }
     
+    /// Send node to head and change head to new moved node
+    ///
+    /// - Parameter node: Node
     func moveToHead(_ node: Node<T>) {
         
         if head === node {
@@ -65,6 +73,9 @@ private class DoublyLinkedList<T> {
         }
     }
     
+    /// Remove last node
+    ///
+    /// - Returns: Deleted node
     func removeLast() -> Node<T>? {
         
         guard let tailNode = tail else { return nil }
@@ -78,6 +89,9 @@ private class DoublyLinkedList<T> {
         return tailNode
     }
     
+    /// Remove input node. Node can at head, tail or in middle.
+    /// Removing node accordingly
+    /// - Parameter node: Node
     func removeNode(_ node: Node<T>) {
         
         guard let tailNode = tail else { return }
@@ -112,6 +126,7 @@ private class DoublyLinkedList<T> {
         }
     }
     
+    /// Deleting all nodes when requires
     func deleteAllNodes() {
 
         while tail != nil {
@@ -123,11 +138,16 @@ private class DoublyLinkedList<T> {
     }
 }
 
+/// Cache type to provide specific functionality
+///
+/// - none: No type described
+/// - imageCache: Image LRU cache
 enum LRUCacheType {
     case none
     case imageCache
 }
 
+/// LRU singleton class
 final class LRUCache<Key, Value> where Key: Hashable {
     
     // MARK:- Variables -
@@ -177,6 +197,12 @@ final class LRUCache<Key, Value> where Key: Hashable {
     
     // MARK:- Class Helpers -
     
+    /// Set generic values to LRU cache
+    ///
+    /// - Parameters:
+    ///   - val: Value to store for key
+    ///   - k: Key to handle value
+    /// - Returns: Operation success
     func setValue(_ val: Value, forKey k: Key) -> Bool {
         
         guard capicity > 0 else { return false }
@@ -218,6 +244,10 @@ final class LRUCache<Key, Value> where Key: Hashable {
         return true
     }
     
+    /// Get value from LRU cache for input key
+    ///
+    /// - Parameter key: inout jey
+    /// - Returns: desired value if found
     func getValue(forKey key: Key) -> Value? {
 
         guard capicity > 0 else { return nil }
@@ -231,6 +261,9 @@ final class LRUCache<Key, Value> where Key: Hashable {
         return node.content.value
     }
     
+    /// Delete a value for input key
+    ///
+    /// - Parameter key: input key
     func removeValue(forKey key: Key) {
         
         guard capicity > 0 else { return }
@@ -240,8 +273,10 @@ final class LRUCache<Key, Value> where Key: Hashable {
         }
         
         dll.removeNode(node)
+        _ = removeCachedData(forValue: node.content.value)
     }
     
+    /// Clear all cached data on requirement. As disk become full
     func clearLRUCache() {
         
         dll.deleteAllNodes()
@@ -251,6 +286,7 @@ final class LRUCache<Key, Value> where Key: Hashable {
 
 extension LRUCache {
     
+    /// prepare cache for specific cache type
     private func prepareCache() {
         
         switch self.type {
@@ -261,6 +297,9 @@ extension LRUCache {
         }
     }
     
+    /// Fetch all existing image for File storage and prepare LRU cache for that
+    /// If our LRU cache capicity is exceeding, then we will remove files
+    /// from local.
     private func createCacheForExistingImages() {
         
         if let allImages = try? FileManager.default.allCachedImageURLPaths() {
@@ -277,6 +316,10 @@ extension LRUCache {
         }
     }
  
+    /// Remove cached data from file storage
+    ///
+    /// - Parameter value: URL for removing data from file storage
+    /// - Returns: Completion success
     private func removeCachedData(forValue value: Value) -> Bool {
         
         if let url = value as? URL,

@@ -10,12 +10,11 @@ import Foundation
 import CommonCrypto
 
 extension String {
+
     
-    func stringByAppendingPathComponent(path: String) -> String {
-        let nsStr = self as NSString
-        return nsStr.appendingPathComponent(path)
-    }
-    
+    /// String to MD5 converter.
+    ///
+    /// - Returns: md5 converted string
     func md5() -> String {
         let context = UnsafeMutablePointer<CC_MD5_CTX>.allocate(capacity: 1)
         var digest = Array<UInt8>(repeating:0, count:Int(CC_MD5_DIGEST_LENGTH))

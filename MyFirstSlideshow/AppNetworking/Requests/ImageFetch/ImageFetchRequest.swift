@@ -80,7 +80,7 @@ enum ImageRefreshPolicy {
 /// Cases that we can work with image network request.
 enum ImageFetchRequest {
     case none
-    case fetch(imageUrl: String, refreshPolicy: ImageRefreshPolicy)
+    case fetch(imageUrl: String)
 }
 
 /// Default implementation of all EndPoints.
@@ -88,7 +88,7 @@ extension ImageFetchRequest : EndPoints {
     
     var task: SessionTask {
         switch self {
-        case .fetch(_, _):
+        case .fetch(_):
             return .downloadTask
         default:
             return .dataTask
@@ -97,7 +97,7 @@ extension ImageFetchRequest : EndPoints {
     
     var requestURL: URL? {
         switch self {
-        case .fetch(let imageUrl, _):
+        case .fetch(let imageUrl):
             return URL(string: imageUrl)
         default:
             return nil
@@ -106,7 +106,7 @@ extension ImageFetchRequest : EndPoints {
     
     var httpType: HTTPType {
         switch self {
-        case .fetch(_ , _):
+        case .fetch(_):
             return .get
         default:
             return .get
@@ -122,7 +122,7 @@ extension ImageFetchRequest : EndPoints {
         let urlParams =  Parameters()
         
         switch self {
-        case .fetch(let imageUrl, _):
+        case .fetch(let imageUrl):
             if let savedHeaders = URLResponseCache().cachedUrlResponse(forKey: imageUrl) {
                 headers = savedHeaders
             }
